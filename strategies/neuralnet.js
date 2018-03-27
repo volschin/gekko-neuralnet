@@ -50,12 +50,36 @@ var strategy = {
     this.nn = new convnetjs.Net();
 
     this.nn.makeLayers( layers );
-    this.trainer = new convnetjs.SGDTrainer(this.nn, {
-      learning_rate: this.settings.learning_rate,
-      momentum: this.settings.momentum,
-      batch_size: this.batchsize,
-      l2_decay: this.settings.decay
-    });
+
+    if(this.settings.method == 'sgd')
+    {
+      this.trainer = new convnetjs.SGDTrainer(this.nn, {
+        learning_rate: this.settings.learning_rate,
+        momentum: this.settings.momentum,
+        batch_size: this.batchsize,
+        l2_decay: this.settings.decay
+      });  
+    }
+    else if(this.settings.method == 'nesterov')
+    {
+      this.trainer = new convnetjs.Trainer(this.nn, {
+        method: this.settings.method,
+        learning_rate: this.settings.learning_rate,
+        momentum: this.settings.momentum,
+        batch_size: this.batchsize,
+        l2_decay: this.settings.decay
+      });  
+    }
+    else
+    {
+      this.trainer = new convnetjs.Trainer(this.nn, {
+        method: this.settings.method,
+        batch_size: this.batchsize,
+        eps: 1e-6,
+        ro: 0.95,
+        l2_decay: this.settings.decay
+      });
+    }
 
     this.addIndicator('stoploss', 'StopLoss', {
       threshold : this.settings.stoploss_threshold
@@ -70,7 +94,7 @@ var strategy = {
       let current_price = [this.priceBuffer[i + 1]];
       let vol = new convnetjs.Vol(data);
       this.trainer.train(vol, current_price);
-       this.predictionCount++;
+      this.predictionCount++;
     }
   },
 

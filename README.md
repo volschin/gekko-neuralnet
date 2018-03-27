@@ -14,6 +14,8 @@ Install the modules in your gekko folder:
 # Usage / Configuration
 
 ```javascript
+// the neural network training method to use. Options are 'sgd', 'adagrad', 'windowgrad', 'nesterov'
+method = 'adadelta'
 
 // the treshold for buying into a currency. e.g.: The predicted price is 1% above the current candle.close
 
@@ -25,16 +27,17 @@ threshold_sell = -1.00
 // The length of the candle.close price buffer. It's used to train the network on every update cycle.
 price_buffer_len = 100
 
-// The learning rate of net
+// The learning rate of net - not used for adadelta or adagrad
 learning_rate = 0.01
 
 
-// learning speed
+// learning speed - not used for adadelta or adagrad
 momentum = 0.9
-decay = 0.01
+//l2 decay
+decay = 0.1
 
 //minimum number of prictions until the network is considered 'trained'. History size should be equal
-min_predictions = 1000
+min_predictions = 720
 
 //enables stoploss function
 stoploss_enabled = false
@@ -46,8 +49,8 @@ stoploss_threshold = 0.95
 
 If this strategy is useful for you and generates profits. Buy me a coffee, or two:
  
-ETH 0x40ddba96695bc040ccbe34b4cfa3a7ae8f225583
+ETH 0xeb969152217062760104b2e17545647e05f1673b
 
-BTC 1AigkGB4KzzRVmDDxwUxt8EaHRDbtpLNrH
+BTC 16k9vwf4vDfF9ufnuu91WDjheVokPjh2X4
 
-NANO xrb_1iy9ztp485o5a5kumcbazz7178hqmzgcjwbesf73owi7zceaac6jrcgk3w9b
+NANO xrb_3boer7rzaewcn583jrfid687znn5ncagp7tqi97pjnupxpr8ep6aor1dqrzy

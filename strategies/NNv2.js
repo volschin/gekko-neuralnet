@@ -12,7 +12,7 @@ var strategy = {
     this.market = 'none';
     this.previousAdvice = 'none';
 
-    this.addIndicator('NN', 'NN', this.settings);
+    this.addIndicator('NN', 'NNv2', this.settings);
     this.addIndicator('zTrailingStop', 'zTrailingStop', this.settings.stoploss_threshold);
     this.bearProfits = 0;
     this.bullProfits = 0;
@@ -47,15 +47,17 @@ var strategy = {
       return;
     }
 
-    if(this.indicators.zTrailingStop.shouldSell){
-      this.indicators.zTrailingStop.short(currentPrice);
-      this.waitTime = 1440;
-      log.debug(`
+    log.debug(`
       Current market: ${this.market}
       Percent change predicted: ${predictedPercentChange}
       Current price: ${currentPrice}
       Last buy price: ${this.lastBuyPrice}
       Current position: ${this.previousAdvice}`);
+
+    if(this.indicators.zTrailingStop.shouldSell){
+      this.indicators.zTrailingStop.short(currentPrice);
+      this.waitTime = 1440;
+      
       if(this.lastBuyPrice < currentPrice)
         this.market == 'bear' ? this.bearProfits++ : this.bullProfits++;
       else
@@ -68,12 +70,6 @@ var strategy = {
     if(( predictedPercentChange < this.threshold_sell) && this.previousAdvice != 'short')
     {
       this.indicators.zTrailingStop.short(currentPrice);
-      log.debug(`
-      Current market: ${this.market}
-      Percent change predicted: ${predictedPercentChange}
-      Current price: ${currentPrice}
-      Last buy price: ${this.lastBuyPrice}
-      Current position: ${this.previousAdvice}`);
       if(this.lastBuyPrice < currentPrice)
         this.market == 'bear' ? this.bearProfits++ : this.bullProfits++;
       else
@@ -84,12 +80,6 @@ var strategy = {
     }
     if(predictedPercentChange > this.threshold_buy && this.previousAdvice != 'long')
     {
-      log.debug(`
-      Current market: ${this.market}
-      Percent change predicted: ${predictedPercentChange}
-      Current price: ${currentPrice}
-      Last buy price: ${this.lastBuyPrice}
-      Current position: ${this.previousAdvice}`);
       this.indicators.zTrailingStop.long(currentPrice);
       this.lastBuyPrice = currentPrice;
       this.previousAdvice = 'long';

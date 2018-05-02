@@ -1,15 +1,29 @@
 # gekko-neuralnet
 Neural network strategy for Gekko
 
-This strategy was inspired from Mounir's strategy, found on the Gekko Discord channel. 
-For reference, that's the original work: https://github.com/cloggy45/Gekko-Bot-Resources/blob/master/gekko/strategies/mounirs-ga-version-2.js
-
 # Install
 copy the file(s) from /strategies/ into the strategies folder of your gekko install
 copy the file(s) from /toml/ into the /config/strategies/ folder of your gekko install
 
 Install the modules in your gekko folder:
 `npm install convnetjs mathjs`
+
+# Example Configurations
+
+```javascript
+config.NNv2 = {
+  threshold_buy_bear: 2.0,
+  threshold_buy_bull: 0.5,
+  threshold_sell_bear: -0.5,
+  threshold_sell_bull: -0.5,
+  NN_SMMA_Length: 4,
+  maFast: 20,
+  maSlow: 720,
+  decay: 0.5,
+  price_buffer_len: 120,
+  stoploss_threshold: 5
+}
+```
 
 # Usage / Configuration
 
